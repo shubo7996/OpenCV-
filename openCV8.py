@@ -15,10 +15,24 @@ while True:
     mask = cv2.inRange(hsv, lower_red, upper_red)
     res = cv2.bitwise_and(frame, frame, mask = mask)
 
+    kernel = np.ones((5,5), np.uint8)
+    erosion = cv2.erode(mask, kernel, iterations =1)
+    dilation = cv2.dilate(mask, kernel, iterations =1)
     
-    
+    #opening removes false positive from background
+    opening = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+    #closing removes false positive from the object
+    closing = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
+
+
+
     cv2.imshow('frame', frame)
     cv2.imshow('res', res)
+    cv2.imshow('erosion', erosion)
+    cv2.imshow('dilation', dilation)
+    cv2.imshow('opening', opening)
+    cv2.imshow('closing', closing)
+
   
     
 
